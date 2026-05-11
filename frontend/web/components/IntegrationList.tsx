@@ -462,7 +462,7 @@ const IntegrationList: FC<IntegrationListProps> = (props) => {
       if (integrationList && integrationList[params.configure]) {
         setTimeout(() => {
           addIntegration(integrationList[params.configure], params.configure)
-          history.replace(document.location.pathname)
+          history.replace(history.location.pathname)
         }, 500)
       }
     }

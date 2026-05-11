@@ -8,7 +8,9 @@ const base = require('../rspack.config')
 module.exports = {
   ...base,
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: process.env.BASENAME
+      ? { rewrites: [{ from: new RegExp(`^${process.env.BASENAME}`), to: '/index.html' }] }
+      : true,
     hot: true,
     liveReload: false,
     port: process.env.PORT || 8080,

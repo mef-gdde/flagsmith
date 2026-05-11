@@ -76,11 +76,15 @@ COPY frontend /build/frontend
 # * build-node-django [build-node]
 FROM build-node AS build-node-django
 
+ARG PUBLIC_PATH=/static/
+ENV PUBLIC_PATH=${PUBLIC_PATH}
 RUN mkdir /build/api && cd frontend && npm run bundledjango
 
 # * build-node-selfhosted [build-node]
 FROM build-node AS build-node-selfhosted
 
+ARG PUBLIC_PATH=/static/
+ENV PUBLIC_PATH=${PUBLIC_PATH}
 RUN cd frontend && npm run bundle
 
 # * build-python

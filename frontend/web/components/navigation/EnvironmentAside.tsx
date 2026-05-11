@@ -222,8 +222,8 @@ const EnvironmentAside: FC<HomeAsideType> = ({ environmentId, projectId }) => {
                                     }),
                                   ).finally(() => {
                                     history.push(
-                                      `${document.location.pathname}${
-                                        document.location.search || ''
+                                      `${history.location.pathname}${
+                                        history.location.search || ''
                                       }`.replace(
                                         environmentId,
                                         newEnvironmentId,

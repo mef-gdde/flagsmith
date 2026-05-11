@@ -32,7 +32,7 @@ const CreateProject = class extends Component {
 
     setInterceptClose(() => {
       return new Promise((resolve) => {
-        this.props.history.push(document.location.pathname)
+        this.props.history.push(this.props.history.location.pathname)
         setInterceptClose(null)
         resolve(true)
       })

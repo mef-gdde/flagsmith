@@ -993,6 +993,7 @@ PROJECT_METADATA_TABLE_NAME_DYNAMO = env.str("PROJECT_METADATA_TABLE_NAME_DYNAMO
 # Front end environment variables
 API_URL = env("API_URL", default="/api/v1/")
 ASSET_URL = env("ASSET_URL", default="/")
+BASENAME = env("BASENAME", default="")
 MAINTENANCE_MODE = env.bool("MAINTENANCE_MODE", default=False)
 DISABLE_ANALYTICS_FEATURES = env.bool(
     "DISABLE_INFLUXDB_FEATURES", default=False

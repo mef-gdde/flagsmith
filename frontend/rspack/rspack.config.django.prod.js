@@ -30,7 +30,7 @@ module.exports = {
     clean: true,
     filename: '[name].[fullhash].js',
     path: path.join(__dirname, '../../api/static'),
-    publicPath: '/static/',
+    publicPath: process.env.PUBLIC_PATH || '/static/',
   },
 
   plugins: require('./plugins')
