@@ -117,7 +117,7 @@ const Tabs: React.FC<TabsProps> = ({
           String(tabLabel).toLowerCase().replace(/ /g, '-'),
         )
         routerHistory?.replace({
-          pathname: window.location.pathname,
+          pathname: routerHistory.location.pathname,
           search: searchParams.toString(),
         })
       } else if (uncontrolled) {

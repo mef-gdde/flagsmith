@@ -71,7 +71,7 @@ const SegmentRow: FC<SegmentRowProps> = ({ index, projectId, segment }) => {
           manageSegmentsPermission
             ? () =>
                 history.push(
-                  `${document.location.pathname.replace(/\/$/, '')}/${id}`,
+                  `${history.location.pathname.replace(/\/$/, '')}/${id}`,
                 )
             : undefined
         }

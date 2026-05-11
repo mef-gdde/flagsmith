@@ -124,6 +124,7 @@ app.get('/config/project-overrides', (req, res) => {
       name: 'evaluationAnalyticsServerUrl',
       value: process.env.EVALUATION_ANALYTICS_SERVER_URL,
     },
+    { name: 'basename', value: process.env.BASENAME },
   ]
   let output = values.map(getVariable).join('')
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate')
@@ -293,7 +294,9 @@ app.post('/api/webflow/webhook', (req, res) => {
 // Catch all to render index template
 app.get('/', (req, res) => {
   const linkedin = process.env.LINKEDIN || ''
+  const basename = process.env.BASENAME || ''
   return res.render('index', {
+    basename,
     isDev,
     linkedin,
   })

@@ -19,7 +19,7 @@ def index(request: Request) -> HttpResponse:
         return HttpResponse(status=405, content_type="application/json")
 
     template = loader.get_template("webpack/index.html")
-    return HttpResponse(template.render(request=request))
+    return HttpResponse(template.render({"basename": settings.BASENAME}, request=request))
 
 
 def project_overrides(request: Request) -> HttpResponse:
@@ -58,6 +58,9 @@ def project_overrides(request: Request) -> HttpResponse:
         for key, value in config_mapping_dict.items()
         if getattr(settings, value, None) is not None
     }
+
+    if settings.BASENAME:
+        override_data["basename"] = settings.BASENAME
 
     return HttpResponse(
         content="window.projectOverrides = " + json.dumps(override_data),

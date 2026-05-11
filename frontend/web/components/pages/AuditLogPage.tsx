@@ -17,7 +17,7 @@ const AuditLogPage: FC = () => {
     const currentParams = Utils.fromParam()
     if (currentParams.env !== environment) {
       history.replace(
-        `${document.location.pathname}?${Utils.toParam({
+        `${history.location.pathname}?${Utils.toParam({
           env: environment,
           page: currentParams.page,
           search: currentParams.search,
@@ -41,7 +41,7 @@ const AuditLogPage: FC = () => {
                   <AuditLog
                     onSearchChange={(search: string) => {
                       history.replace(
-                        `${document.location.pathname}?${Utils.toParam({
+                        `${history.location.pathname}?${Utils.toParam({
                           env: environment,
                           page: Utils.fromParam().page,
                           search,
@@ -50,7 +50,7 @@ const AuditLogPage: FC = () => {
                     }}
                     onPageChange={(page: number) => {
                       history.replace(
-                        `${document.location.pathname}?${Utils.toParam({
+                        `${history.location.pathname}?${Utils.toParam({
                           env: environment,
                           page,
                           search: Utils.fromParam().search,

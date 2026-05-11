@@ -198,7 +198,7 @@ const FeatureRow: FC<FeatureRowProps> = (props) => {
     const tabValue = tab || Utils.fromParam().tab || 'value'
 
     history.replace({
-      pathname: document.location.pathname,
+      pathname: history.location.pathname,
       search: `?feature=${projectFlag.id}&tab=${tabValue}`,
     })
 
@@ -281,7 +281,7 @@ const FeatureRow: FC<FeatureRowProps> = (props) => {
         }
 
         history.replace({
-          pathname: document.location.pathname,
+          pathname: history.location.pathname,
           search: '',
         })
       },

@@ -6,6 +6,7 @@ import Utils from 'common/utils/utils'
 import { Project } from 'common/types/responses'
 import useSelectedOrganisation from 'common/hooks/useSelectedOrganisation'
 import { appLevelPaths } from './constants'
+import ProjectConfig from 'common/project'
 
 type SelectOrgAndProjectType = {
   activeProject: Project | undefined
@@ -27,7 +28,7 @@ const SelectOrgAndProject: FC<SelectOrgAndProjectType> = ({
             height: 24,
             width: 24,
           }}
-          src='/static/images/nav-logo.png'
+          src={`${ProjectConfig.basename || ''}/static/images/nav-logo.png`}
         />
       </Link>
       {!isAppLevelPage && (

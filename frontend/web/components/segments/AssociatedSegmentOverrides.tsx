@@ -176,7 +176,7 @@ const AssociatedSegmentOverrides: FC<AssociatedSegmentOverridesType> = ({
                 onChange={(next) => {
                   FeatureListStore.isLoading = true
                   history.replace(
-                    `${document.location.pathname}?${Utils.toParam(
+                    `${history.location.pathname}?${Utils.toParam(
                       getURLParamsFromFilters(next),
                     )}`,
                   )

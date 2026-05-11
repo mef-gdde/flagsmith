@@ -78,7 +78,7 @@ const SegmentsPage: FC = () => {
 
   useEffect(() => {
     history.replace(
-      `${document.location.pathname}?${Utils.toParam({
+      `${history.location.pathname}?${Utils.toParam({
         ...Utils.fromParam(),
         featureSpecific: showFeatureSpecific,
       })}`,

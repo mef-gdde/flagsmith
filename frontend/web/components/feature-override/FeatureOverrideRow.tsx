@@ -120,7 +120,7 @@ const FeatureOverrideRow: FC<FeatureOverrideRowProps> = ({
       flag: projectFlag.name,
       tab,
     })
-    history.replace(`${document.location.pathname}?${newParams}`)
+    history.replace(`${history.location.pathname}?${newParams}`)
     API.trackEvent(Constants.events.VIEW_USER_FEATURE)
     openModal(
       <span>
@@ -158,7 +158,7 @@ const FeatureOverrideRow: FC<FeatureOverrideRowProps> = ({
           ...params,
           flag: undefined,
         })
-        history.replace(`${document.location.pathname}?${newParams}`)
+        history.replace(`${history.location.pathname}?${newParams}`)
       },
     )
   }, [

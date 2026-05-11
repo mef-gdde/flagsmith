@@ -29,7 +29,7 @@ const params = Utils.fromParam()
 
 if (params.token) {
   API.setCookie('t', params.token)
-  document.location = document.location.origin
+  document.location = document.location.origin + (Project.basename || '')
 }
 
 // Render the React application to the DOM
@@ -56,7 +56,11 @@ if (res && !isInvite && !isOauth) {
 }
 
 function isPublicURL() {
-  const pathname = document.location.pathname
+  const basename = Project.basename || ''
+  let pathname = document.location.pathname
+  if (basename && pathname.startsWith(basename)) {
+    pathname = pathname.slice(basename.length) || '/'
+  }
 
   // /oauth/authorize requires auth (consent screen), but /oauth/:type (callbacks) is public.
   if (pathname.startsWith('/oauth/authorize')) {
@@ -89,12 +93,15 @@ setTimeout(() => {
 
   // redirect before login
   if (!isPublicURL() && !AccountStore.getUser()) {
-    API.setRedirect(
-      document.location.pathname + (document.location.search || ''),
-    )
+    const basename = Project.basename || ''
+    let redirectPath = document.location.pathname
+    if (basename && redirectPath.startsWith(basename)) {
+      redirectPath = redirectPath.slice(basename.length) || '/'
+    }
+    API.setRedirect(redirectPath + (document.location.search || ''))
     browserHistory.push(
       `/?redirect=${encodeURIComponent(
-        document.location.pathname + (document.location.search || ''),
+        redirectPath + (document.location.search || ''),
       )}`,
     )
   }

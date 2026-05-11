@@ -40,7 +40,7 @@ export function useFeatureFilters(history: History): {
     if (!currentParams.feature) {
       const urlParams = buildUrlParams(filters, page)
       history.replace(
-        `${document.location.pathname}?${Utils.toParam(urlParams)}`,
+        `${history.location.pathname}?${Utils.toParam(urlParams)}`,
       )
     }
   }, [filters, page, history])
@@ -60,7 +60,7 @@ export function useFeatureFilters(history: History): {
   }
 
   const clearFilters = useCallback(() => {
-    history.replace(document.location.pathname)
+    history.replace(history.location.pathname)
     const newFilters = getFiltersFromParams({})
     setFilters(newFilters)
     setPage(1)
