@@ -3,6 +3,7 @@ import ErrorMessage from 'components/ErrorMessage'
 import Button from 'components/base/forms/Button'
 import { setInterceptClose } from './base/ModalDefault'
 import PlanBasedAccess from 'components/PlanBasedAccess'
+import OrganisationStore from 'common/stores/organisation-store'
 
 const CreateProject = class extends Component {
   static displayName = 'CreateProject'
@@ -51,8 +52,11 @@ const CreateProject = class extends Component {
       <OrganisationProvider onSave={this.close}>
         {({ createProject, error, isSaving, projects }) => {
           const hasProject = !!projects && !!projects.length
+          const maxProjects = OrganisationStore.getSubscriptionMeta()?.max_projects
+          const unlimitedProjects = maxProjects === null || maxProjects === undefined
           const canCreate =
             !hasProject ||
+            unlimitedProjects ||
             !!Utils.getPlansPermission('CREATE_ADDITIONAL_PROJECT')
           const disableCreate = !canCreate
           const inner = (
@@ -101,7 +105,7 @@ const CreateProject = class extends Component {
               </form>
             </div>
           )
-          if (hasProject) {
+          if (hasProject && !unlimitedProjects) {
             return (
               <>
                 <PlanBasedAccess

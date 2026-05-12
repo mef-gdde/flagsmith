@@ -473,6 +473,9 @@ const Utils = Object.assign({}, BaseUtils, {
     return planNames.free
   },
   getPlanPermission: (plan: string, feature: PaidFeature) => {
+    if (!Utils.isSaas()) {
+      return true
+    }
     const planName = Utils.getPlanName(plan)
     if (!plan || planName === planNames.free) {
       return false
@@ -492,6 +495,9 @@ const Utils = Object.assign({}, BaseUtils, {
     return true
   },
   getPlansPermission: (feature: PaidFeature) => {
+    if (!Utils.isSaas()) {
+      return true
+    }
     const isOrgPermission = feature !== '2FA'
     let plans
     if (isOrgPermission) {
