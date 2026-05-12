@@ -119,6 +119,11 @@ const App = class extends Component {
 
   onLogin = () => {
     let redirect = API.getRedirect()
+    // Strip basename if a stale cookie stored the full browser path including the prefix
+    const basename = Project.basename || ''
+    if (redirect && basename && redirect.startsWith(basename)) {
+      redirect = redirect.slice(basename.length) || '/'
+    }
     const invite = API.getInvite()
     if (invite) {
       redirect = `/invite/${invite}`

@@ -72,7 +72,7 @@ app.get('/config/project-overrides', (req, res) => {
     {
       name: 'api',
       value: process.env.FLAGSMITH_PROXY_API_URL
-        ? '/api/v1/'
+        ? `${process.env.BASENAME || ''}/api/v1/`
         : process.env.FLAGSMITH_API_URL,
     },
     {
