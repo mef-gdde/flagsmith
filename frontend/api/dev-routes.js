@@ -36,7 +36,7 @@ module.exports = function setupRoutes(app) {
       { name: 'pylonAppId', value: process.env.PYLON_APP_ID },
       { name: 'fpr', value: process.env.FIRST_PROMOTER_ID },
       { name: 'sentry', value: process.env.SENTRY_API_KEY },
-      { name: 'api', value: process.env.FLAGSMITH_PROXY_API_URL ? '/api/v1/' : process.env.FLAGSMITH_API_URL },
+      { name: 'api', value: process.env.FLAGSMITH_PROXY_API_URL ? `${process.env.BASENAME || ''}/api/v1/` : process.env.FLAGSMITH_API_URL },
       { name: 'apiProxyEnabled', value: !!process.env.FLAGSMITH_PROXY_API_URL },
       { name: 'maintenance', value: envToBool('ENABLE_MAINTENANCE_MODE', false) },
       { name: 'flagsmithClientAPI', value: process.env.FLAGSMITH_ON_FLAGSMITH_API_URL },
