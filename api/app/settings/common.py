@@ -60,7 +60,8 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default=get_random_secret_key())
 
 HOSTED_SEATS_LIMIT = env.int("HOSTED_SEATS_LIMIT", default=0)
 
-MAX_PROJECTS_IN_FREE_PLAN = 1
+_max_projects = env.int("MAX_PROJECTS_IN_FREE_PLAN", default=1)
+MAX_PROJECTS_IN_FREE_PLAN = _max_projects if _max_projects > 0 else None
 
 
 ALLOWED_HOSTS: list[str] = env.list("DJANGO_ALLOWED_HOSTS", default=[])
