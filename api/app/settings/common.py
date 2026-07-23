@@ -65,7 +65,9 @@ WAREHOUSE_CREDENTIALS_SECRET = env(
 
 HOSTED_SEATS_LIMIT = env.int("HOSTED_SEATS_LIMIT", default=0)
 
-MAX_PROJECTS_IN_FREE_PLAN = 1
+# A value of 0 disables the project limit. Self-hosted deployments can override
+# this without changing subscription metadata or application code.
+MAX_PROJECTS_IN_FREE_PLAN = env.int("MAX_PROJECTS_IN_FREE_PLAN", default=1)
 
 
 ALLOWED_HOSTS: list[str] = env.list("DJANGO_ALLOWED_HOSTS", default=[])

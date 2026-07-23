@@ -512,6 +512,10 @@ const Utils = Object.assign({}, BaseUtils, {
   },
 
   getPlansPermission: (feature: PaidFeature) => {
+    if (feature === 'CREATE_ADDITIONAL_PROJECT' && !Utils.isSaas()) {
+      return true
+    }
+
     const isOrgPermission = feature !== '2FA'
     let plans
     if (isOrgPermission) {
