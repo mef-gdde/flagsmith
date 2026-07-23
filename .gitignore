@@ -8,6 +8,7 @@ venv
 checkstyle.txt
 .python-version
 .env*
+!.env.example
 !.env-local
 !.env-ci
 .direnv

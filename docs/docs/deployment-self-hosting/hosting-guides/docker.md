@@ -16,6 +16,20 @@ docker-compose -f docker-compose.yml up
 
 Wait for the images to download and run, then visit `http://localhost:8000/`. As a first step, you will need to create a new account at [http://localhost:8000/signup](http://localhost:8000/signup)
 
+### Custom database and ports
+
+The Compose file uses its bundled PostgreSQL database and exposes Flagsmith on ports `8000` and `8001` by default. Copy the provided `.env.example` to `.env`, then override the settings as needed:
+
+```bash
+cp .env.example .env
+```
+
+The same values can also be supplied as shell environment variables. For example, set `DATABASE_URL` to `postgresql://flagsmith:password@database.example.com:5432/flagsmith` to use an externally managed database.
+
+`DATABASE_URL` configures both the migration and application services. `FLAGSMITH_PORT` and `FLAGSMITH_TASK_PROCESSOR_PORT` only change the ports published on the Docker host; both containers continue to listen on port `8000` internally.
+
+Compose uses `dataef` as the global default network for every service and creates it automatically. To use an existing shared network instead, set `DATAEF_NETWORK_NAME` to its name and `DATAEF_NETWORK_EXTERNAL=true`. The external network must already exist.
+
 ## Environment Variables
 
 As well as the Environment Variables specified in the [API](/deployment-self-hosting/core-configuration/environment-variables#api-environment-variables) and [Frontend](/deployment-self-hosting/core-configuration/environment-variables#frontend-environment-variables), you can also specify the following:

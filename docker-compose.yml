@@ -6,7 +6,8 @@ x-flagsmith-env: &flagsmith-env
   # API: https://docs.flagsmith.com/deployment/locally-api#environment-variables
   # UI: https://docs.flagsmith.com/deployment/locally-frontend#environment-variables
 
-  DATABASE_URL: postgresql://postgres:password@postgres:5432/flagsmith
+  # Override DATABASE_URL to use an externally managed PostgreSQL database.
+  DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:password@postgres:5432/flagsmith}
   USE_POSTGRES_FOR_ANALYTICS: 'true' # Store API and Flag Analytics data in Postgres
   ENVIRONMENT: production # set to 'production' in production.
   DJANGO_ALLOWED_HOSTS: '*' # Change this in production
@@ -33,25 +34,7 @@ x-flagsmith-env: &flagsmith-env
   # EMAIL_PORT: 587 # optional
   # EMAIL_USE_TLS: 'true' # optional
 
-volumes:
-  pgdata:
-
 services:
-  postgres:
-    image: postgres:15.5-alpine
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: flagsmith
-    container_name: flagsmith_postgres
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -d flagsmith -U postgres']
-      interval: 2s
-      timeout: 2s
-      retries: 20
-      start_period: 20s
-
   migrate-db:
     image: docker.flagsmith.com/flagsmith/flagsmith:latest
     command:
@@ -60,9 +43,6 @@ services:
       <<: *flagsmith-env
     healthcheck:
       disable: true
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   flagsmith:
     image: docker.flagsmith.com/flagsmith/flagsmith:latest
@@ -71,11 +51,10 @@ services:
     environment:
       <<: *flagsmith-env
     ports:
-      - 8000:8000
+      - '${FLAGSMITH_PORT:-8000}:8000'
     depends_on:
       migrate-db:
         condition: service_completed_successfully
-
   # The flagsmith_processor service is only needed if TASK_RUN_METHOD set to TASK_PROCESSOR
   # in the application environment
   flagsmith-task-processor:
@@ -83,8 +62,13 @@ services:
     environment:
       <<: *flagsmith-env
     ports:
-      - 8001:8000
+      - '${FLAGSMITH_TASK_PROCESSOR_PORT:-8001}:8000'
     depends_on:
       migrate-db:
         condition: service_completed_successfully
     command: run-task-processor
+
+networks:
+  default:
+    name: ${DATAEF_NETWORK_NAME:-dataef}
+    external: ${DATAEF_NETWORK_EXTERNAL:-false}
