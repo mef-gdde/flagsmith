@@ -1,6 +1,12 @@
 # See https://docs.flagsmith.com/deployment/docker for more information on running Flagsmith in Docker
 # This Docker Compose file will run the entire Flagsmith Platform
 
+x-flagsmith-service: &flagsmith-service
+  image: ${FLAGSMITH_IMAGE:-flagsmith-fork:local}
+  build:
+    context: .
+    target: oss-unified
+
 x-flagsmith-env: &flagsmith-env
   # All environments variables are available here:
   # API: https://docs.flagsmith.com/deployment/locally-api#environment-variables
@@ -8,6 +14,7 @@ x-flagsmith-env: &flagsmith-env
 
   # Override DATABASE_URL to use an externally managed PostgreSQL database.
   DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:password@postgres:5432/flagsmith}
+  MAX_PROJECTS_IN_FREE_PLAN: ${MAX_PROJECTS_IN_FREE_PLAN:-0}
   USE_POSTGRES_FOR_ANALYTICS: 'true' # Store API and Flag Analytics data in Postgres
   ENVIRONMENT: production # set to 'production' in production.
   DJANGO_ALLOWED_HOSTS: '*' # Change this in production
@@ -36,7 +43,7 @@ x-flagsmith-env: &flagsmith-env
 
 services:
   migrate-db:
-    image: docker.flagsmith.com/flagsmith/flagsmith:latest
+    <<: *flagsmith-service
     command:
       - migrate
     environment:
@@ -45,7 +52,7 @@ services:
       disable: true
 
   flagsmith:
-    image: docker.flagsmith.com/flagsmith/flagsmith:latest
+    <<: *flagsmith-service
     command:
       - serve
     environment:
@@ -58,7 +65,7 @@ services:
   # The flagsmith_processor service is only needed if TASK_RUN_METHOD set to TASK_PROCESSOR
   # in the application environment
   flagsmith-task-processor:
-    image: docker.flagsmith.com/flagsmith/flagsmith:latest
+    <<: *flagsmith-service
     environment:
       <<: *flagsmith-env
     ports:

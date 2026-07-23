@@ -188,6 +188,7 @@ generate-mcp-openapi:
 	  --output ../mcp/src/flagsmith_mcp/openapi.json
 
 .PHONY: generate-docs
+generate-docs: DEBUG=false
 generate-docs: generate-flagsmith-sdk-openapi generate-mcp-openapi
 	uv run flagsmith docgen metrics > ../docs/docs/deployment-self-hosting/observability/_metrics-catalogue.md
 	uv run flagsmith docgen events > ../docs/docs/deployment-self-hosting/observability/_events-catalogue.md

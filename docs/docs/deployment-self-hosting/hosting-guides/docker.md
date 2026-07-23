@@ -30,6 +30,10 @@ The same values can also be supplied as shell environment variables. For example
 
 Compose uses `dataef` as the global default network for every service and creates it automatically. To use an existing shared network instead, set `DATAEF_NETWORK_NAME` to its name and `DATAEF_NETWORK_EXTERNAL=true`. The external network must already exist.
 
+Self-hosted Docker deployments allow unlimited projects per organisation by default. Set `MAX_PROJECTS_IN_FREE_PLAN` to a positive integer to enforce a limit; `0` means unlimited.
+
+The Compose file builds the unified Flagsmith image from the checked-out source, ensuring fork-specific backend and frontend changes are included. Set `FLAGSMITH_IMAGE` to customise the resulting local image tag.
+
 ## Environment Variables
 
 As well as the Environment Variables specified in the [API](/deployment-self-hosting/core-configuration/environment-variables#api-environment-variables) and [Frontend](/deployment-self-hosting/core-configuration/environment-variables#frontend-environment-variables), you can also specify the following:
