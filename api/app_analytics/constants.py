@@ -31,6 +31,7 @@ SDK_USER_AGENT_KNOWN_VERSIONS: dict[KnownSDK, list[str]] = {
     "flagsmith-flutter-sdk": [
         "unknown",
         "6.1.0",
+        "6.1.1",
     ],
     "flagsmith-go-sdk": [
         "unknown",
@@ -51,6 +52,7 @@ SDK_USER_AGENT_KNOWN_VERSIONS: dict[KnownSDK, list[str]] = {
         "10.0.0",
         "12.0.0",
         "12.0.1",
+        "12.1.0",
     ],
     "flagsmith-kotlin-android-sdk": [
         "unknown",
@@ -65,11 +67,15 @@ SDK_USER_AGENT_KNOWN_VERSIONS: dict[KnownSDK, list[str]] = {
         "8.0.1",
         "8.0.2",
         "8.1.0",
+        "8.1.1",
+        "8.1.2",
+        "9.0.0",
     ],
     "flagsmith-php-sdk": [
         "unknown",
         "5.0.0",
         "5.1.0",
+        "5.1.1",
     ],
     "flagsmith-python-sdk": [
         "unknown",
@@ -81,6 +87,10 @@ SDK_USER_AGENT_KNOWN_VERSIONS: dict[KnownSDK, list[str]] = {
         "5.1.1",
         "5.2.0",
         "5.3.0",
+        "5.3.1",
+        "5.4.0",
+        "5.5.0",
+        "6.0.0",
     ],
     "flagsmith-ruby-sdk": [
         "unknown",
@@ -89,6 +99,7 @@ SDK_USER_AGENT_KNOWN_VERSIONS: dict[KnownSDK, list[str]] = {
     "flagsmith-rust-sdk": [
         "unknown",
         "2.1.0",
+        "2.1.1",
     ],
     "flagsmith-swift-ios-sdk": [
         "unknown",
@@ -131,6 +142,12 @@ TRACK_HEADERS: dict[str, InputLabel] = {
     "Flagsmith-SDK-User-Agent": "sdk_user_agent",
     "User-Agent": "user_agent",
 }
+
+SDK_USER_AGENT_HEADERS: list[str] = [
+    "Flagsmith-SDK-User-Agent",  # Exists because browsers own `User-Agent`
+    "User-Agent",
+]
+
 LABELS: tuple[Label, ...] = get_args(Label)
 
 NO_ANALYTICS_DATABASE_CONFIGURED_WARNING = (

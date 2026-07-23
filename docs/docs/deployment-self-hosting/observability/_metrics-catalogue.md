@@ -37,6 +37,15 @@ Results of cache retrieval for environment document. `result` label is either `h
 Labels:
  - `result`
 
+### `flagsmith_experimentation_warehouse_connection_verifications`
+
+Counter.
+
+Outcomes of connection verification attempts against customers&#x27; own data warehouses. `result` label is either `success` or `failure`.
+
+Labels:
+ - `result`
+
 ### `flagsmith_http_server_request_duration_seconds`
 
 Histogram.
@@ -69,6 +78,46 @@ Labels:
  - `route`
  - `method`
  - `response_status`
+
+### `flagsmith_segment_membership_backfill_duration_seconds`
+
+Histogram.
+
+Duration of a segment-membership backfill for one environment.
+
+Labels:
+
+### `flagsmith_segment_membership_backfill_identities`
+
+Counter.
+
+Total identities mirrored from Dynamo to ClickHouse by the segment-membership backfill task across all environments.
+
+Labels:
+
+### `flagsmith_segment_membership_read_duration_seconds`
+
+Histogram.
+
+Duration of one segment membership page read.
+
+Labels:
+
+### `flagsmith_segment_membership_refresh_duration_seconds`
+
+Histogram.
+
+Duration of a single segment-membership count-refresh run for one project.
+
+Labels:
+
+### `flagsmith_segment_membership_refresh_failures`
+
+Counter.
+
+Total segment-membership refresh runs that failed for any reason.
+
+Labels:
 
 ### `flagsmith_task_processor_enqueued_tasks`
 
