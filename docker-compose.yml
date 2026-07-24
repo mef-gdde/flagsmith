@@ -1,5 +1,6 @@
 # See https://docs.flagsmith.com/deployment/docker for more information on running Flagsmith in Docker
 # This Docker Compose file will run the entire Flagsmith Platform
+name: flagsmith
 
 x-flagsmith-service: &flagsmith-service
   image: ${FLAGSMITH_IMAGE:-flagsmith-fork:local}
@@ -43,6 +44,7 @@ x-flagsmith-env: &flagsmith-env
 
 services:
   migrate-db:
+    container_name: flagsmith-migrate-db
     <<: *flagsmith-service
     command:
       - migrate
@@ -52,6 +54,7 @@ services:
       disable: true
 
   flagsmith:
+    container_name: flagsmith
     <<: *flagsmith-service
     command:
       - serve
@@ -65,6 +68,7 @@ services:
   # The flagsmith_processor service is only needed if TASK_RUN_METHOD set to TASK_PROCESSOR
   # in the application environment
   flagsmith-task-processor:
+    container_name: flagsmith-task-processor
     <<: *flagsmith-service
     environment:
       <<: *flagsmith-env

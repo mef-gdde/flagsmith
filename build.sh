@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+ENV_FILE=${ENV_FILE:-"${SCRIPT_DIR}/.env.build"}
+
+if [ -f "${ENV_FILE}" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  source "${ENV_FILE}"
+  set +a
+fi
+
 REGISTRY=${REGISTRY:-}
 TAG=${TAG:-latest}
 PLATFORM=${PLATFORM:-linux/amd64,linux/arm64}
