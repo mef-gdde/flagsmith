@@ -1,0 +1,37 @@
+# Copy this file to docker-compose.override.yml to customise local dev overrides.
+name: flagsmith
+
+services:
+  flagsmith:
+    command:
+      - start
+      - --reload
+      - api
+    volumes:
+      - ./api:/app
+      - /app/.venv
+      - /app/__pycache__
+
+  flagsmith-task-processor:
+    command:
+      - start
+      - --reload
+      - task-processor
+    volumes:
+      - ./api:/app
+      - /app/.venv
+      - /app/__pycache__
+
+  frontend-dev:
+    build:
+      context: .
+      target: frontend-dev
+    command:
+      - npm
+      - run
+      - dev
+    ports:
+      - '${FRONTEND_PORT:-8080}:8080'
+    volumes:
+      - ./frontend:/srv/bt
+      - /srv/bt/node_modules

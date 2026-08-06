@@ -27,6 +27,19 @@ x-flagsmith-env: &flagsmith-env
   # Enable Task Processor
   TASK_RUN_METHOD: TASK_PROCESSOR # other options are: SYNCHRONOUSLY, SEPARATE_THREAD (default)
   PROMETHEUS_ENABLED: 'true'
+  PYTHONUNBUFFERED: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  CORS_ORIGIN_ALLOW_ALL: 'true'
+  PREVENT_SIGNUP: ${PREVENT_SIGNUP:-false}
+  PREVENT_EMAIL_PASSWORD: ${PREVENT_EMAIL_PASSWORD:-false}
+  PREVENT_FORGOT_PASSWORD: ${PREVENT_FORGOT_PASSWORD:-false}
+  PREVENT_OAUTH: ${PREVENT_OAUTH:-false}
+  PREVENT_SAML: ${PREVENT_SAML:-false}
+
+
+
+
+
 
   # Uncomment if you want to enable Google OAuth. Note this does not turn Google OAuth on. You still need to use
   # Flagsmith on Flagsmith to enable it - https://docs.flagsmith.com/deployment/#oauth_google
@@ -50,6 +63,10 @@ services:
       - migrate
     environment:
       <<: *flagsmith-env
+    volumes:
+      - ./api:/app
+      - /app/.venv
+      - /app/__pycache__
     healthcheck:
       disable: true
 
@@ -57,14 +74,30 @@ services:
     container_name: flagsmith
     <<: *flagsmith-service
     command:
-      - serve
+      - start
+      - --reload
+      - api
     environment:
       <<: *flagsmith-env
     ports:
       - '${FLAGSMITH_PORT:-8000}:8000'
+    volumes:
+      - ./api:/app
+      - /app/.venv
+      - /app/__pycache__
     depends_on:
       migrate-db:
         condition: service_completed_successfully
+    develop:
+      watch:
+        - action: sync
+          path: ./api
+          target: /app
+          ignore:
+            - __pycache__/
+            - .venv/
+            - .mypy_cache/
+
   # The flagsmith_processor service is only needed if TASK_RUN_METHOD set to TASK_PROCESSOR
   # in the application environment
   flagsmith-task-processor:
@@ -73,13 +106,72 @@ services:
     environment:
       <<: *flagsmith-env
     ports:
-      - '${FLAGSMITH_TASK_PROCESSOR_PORT:-8001}:8000'
+      - '${FLAGSMITH_TASK_PROCESSOR_PORT:-7778}:8000'
     depends_on:
       migrate-db:
         condition: service_completed_successfully
-    command: run-task-processor
+    command:
+      - start
+      - --reload
+      - task-processor
+
+    volumes:
+      - ./api:/app
+      - /app/.venv
+      - /app/__pycache__
+    develop:
+      watch:
+        - action: sync
+          path: ./api
+          target: /app
+          ignore:
+            - __pycache__/
+            - .venv/
+            - .mypy_cache/
+
+  frontend-dev:
+    container_name: flagsmith-frontend-dev
+    build:
+      context: .
+      target: frontend-dev
+    command:
+      - npm
+      - run
+      - dev
+    ports:
+      - '${FRONTEND_PORT:-8080}:8080'
+    environment:
+      - ENV=local
+      - PORT=8080
+      - FRONTEND_PORT=${FRONTEND_PORT:-8888}
+      - FLAGSMITH_PORT=${FLAGSMITH_PORT:-8005}
+      - FLAGSMITH_API_URL=http://localhost:${FLAGSMITH_PORT:-8005}/api/v1/
+
+      - PREVENT_SIGNUP=${PREVENT_SIGNUP:-false}
+      - PREVENT_EMAIL_PASSWORD=${PREVENT_EMAIL_PASSWORD:-false}
+      - PREVENT_FORGOT_PASSWORD=${PREVENT_FORGOT_PASSWORD:-false}
+      - PREVENT_OAUTH=${PREVENT_OAUTH:-false}
+      - PREVENT_SAML=${PREVENT_SAML:-false}
+
+
+
+
+
+    volumes:
+      - ./frontend:/srv/bt
+      - /srv/bt/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /srv/bt
+          ignore:
+            - node_modules/
 
 networks:
   default:
-    name: ${DATAEF_NETWORK_NAME:-dataef}
-    external: ${DATAEF_NETWORK_EXTERNAL:-false}
+    name: ${DATAEF_NETWORK_NAME:-dataef-network}
+    external: true
+
+
+
