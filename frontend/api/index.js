@@ -59,6 +59,15 @@ app.get('/config/project-overrides', (req, res) => {
       value: envToBool('PREVENT_FORGOT_PASSWORD', false),
     },
     {
+      name: 'preventOAuth',
+      value: envToBool('PREVENT_OAUTH', false),
+    },
+    {
+      name: 'preventSAML',
+      value: envToBool('PREVENT_SAML', false),
+    },
+
+    {
       name: 'superUserCreateOnly',
       value: envToBool('ONLY_SUPERUSERS_CAN_CREATE_ORGANISATIONS', false),
     },
