@@ -1,6 +1,13 @@
 const _globalThis = typeof window === 'undefined' ? global : window
 const Project = {
-  api: 'http://localhost:8000/api/v1/',
+  api: (typeof process !== 'undefined' && process.env && process.env.FLAGSMITH_PORT) ? `http://localhost:${process.env.FLAGSMITH_PORT}/api/v1/` : 'http://localhost:8005/api/v1/',
+
+
+
+
+
+
+
   chargebee: {
     site: 'flagsmith-test',
   },
@@ -10,6 +17,7 @@ const Project = {
   env: 'dev',
 
   flagsmith: 'ENktaJnfLVbLifybz34JmX',
+
 
   flagsmithClientAPI: 'https://edge.api.flagsmith.com/api/v1/',
 

@@ -266,3 +266,22 @@ COPY --from=build-node-django /build/api/ /app/
 RUN python manage.py collectstatic --no-input
 
 USER nobody
+
+# * frontend-dev [node]
+FROM node AS frontend-dev
+
+WORKDIR /srv/bt
+
+COPY frontend/package.json frontend/package-lock.json frontend/.npmrc ./frontend/.nvmrc ./
+COPY frontend/bin/ ./bin/
+COPY frontend/env/ ./env/
+
+RUN npm ci --quiet
+
+COPY frontend /srv/bt
+
+EXPOSE 8080
+
+CMD ["npm", "run", "dev"]
+
+

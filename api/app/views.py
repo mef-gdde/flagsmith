@@ -47,6 +47,8 @@ def project_overrides(request: Request) -> HttpResponse:
         "linkedinPartnerTracking": "LINKEDIN_PARTNER_TRACKING",
         "maintenance": "MAINTENANCE_MODE",
         "preventEmailPassword": "PREVENT_EMAIL_PASSWORD",
+        "preventOAuth": "PREVENT_OAUTH",
+        "preventSAML": "PREVENT_SAML",
         "preventSignup": "PREVENT_SIGNUP",
         "reo": "REO_API_KEY",
         "sentry": "SENTRY_API_KEY",

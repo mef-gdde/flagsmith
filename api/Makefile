@@ -38,18 +38,21 @@ lint:
 typecheck:
 	uv run mypy .
 
+COMPOSE_FILES ?= -f $(COMPOSE_FILE)
+
 .PHONY: docker-up
 docker-up:
-	docker compose up --force-recreate --remove-orphans -d
-	docker compose ps
+	docker compose $(COMPOSE_FILES) up --force-recreate --remove-orphans -d
+	docker compose $(COMPOSE_FILES) ps
 
 .PHONY: docker-down
 docker-down:
-	docker compose stop
+	docker compose $(COMPOSE_FILES) stop
 
 .PHONY: docker-logs
 docker-logs:
-	docker compose logs --follow
+	docker compose $(COMPOSE_FILES) logs --follow
+
 
 .PHONY: docker-build
 docker-build:

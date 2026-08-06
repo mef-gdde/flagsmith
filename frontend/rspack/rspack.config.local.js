@@ -13,6 +13,11 @@ module.exports = {
     hot: true,
     liveReload: false,
     port: process.env.PORT || 8080,
+    client: {
+      webSocketURL: {
+        port: process.env.FRONTEND_PORT || process.env.PORT || 8080,
+      },
+    },
     app: async () => express(),
     setupMiddlewares: (middlewares, devServer) => {
       // Register the Express routes from api/index on the dev server's app
@@ -65,7 +70,12 @@ module.exports = {
         SENTRY_RELEASE_VERSION: JSON.stringify(''),
         __DEV__: true,
         whitelabel: JSON.stringify(process.env.WHITELABEL),
+        'process.env.FLAGSMITH_PORT': JSON.stringify(process.env.FLAGSMITH_PORT || '8005'),
+        'process.env.FRONTEND_PORT': JSON.stringify(process.env.FRONTEND_PORT || '8888'),
+        'process.env.PREVENT_SAML': JSON.stringify(process.env.PREVENT_SAML || 'true'),
+
       }),
+
       // Note: HotModuleReplacementPlugin is not needed — devServer.hot: true handles it
     ])
     .concat(

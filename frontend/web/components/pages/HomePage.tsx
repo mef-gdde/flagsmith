@@ -208,7 +208,10 @@ const HomePage: React.FC = () => {
     )
   }
 
-  if ((!isSignup || !disableOauthRegister) && !disableSignup) {
+  const preventOAuth = Project.preventOAuth || (typeof window !== 'undefined' && (window as any).projectOverrides?.preventOAuth)
+  const preventSAML = Project.preventSAML || (typeof window !== 'undefined' && (window as any).projectOverrides?.preventSAML)
+
+  if (!preventOAuth && (!isSignup || !disableOauthRegister) && !disableSignup) {
     if (Utils.getFlagsmithValue('oauth_github')) {
       oauths.push(
         <div className={oauthClasses} key='github'>
@@ -250,11 +253,14 @@ const HomePage: React.FC = () => {
         </div>,
       )
     }
+  }
 
-    if (
-      !Utils.flagsmithFeatureExists('saml') ||
-      Utils.getFlagsmithHasFeature('saml')
-    ) {
+  if (
+    !preventSAML &&
+    (!Utils.flagsmithFeatureExists('saml') ||
+      Utils.getFlagsmithHasFeature('saml'))
+  ) {
+
       oauths.push(
         <div className={oauthClasses}>
           <Button
@@ -290,8 +296,8 @@ const HomePage: React.FC = () => {
         </div>,
       )
     }
-  }
   return (
+
     <AccountProvider>
       {(
         {
@@ -695,28 +701,31 @@ const HomePage: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className='mt-4 text-center text-small text-muted'>
-                By signing up you agree to our{' '}
-                <a
-                  style={{ opacity: 0.8 }}
-                  target='_blank'
-                  className='text-small'
-                  href='https://flagsmith.com/terms-of-service/'
-                  rel='noreferrer'
-                >
-                  Terms of Service
-                </a>{' '}
-                and{' '}
-                <a
-                  style={{ opacity: 0.8 }}
-                  target='_blank'
-                  className='text-small'
-                  href='https://flagsmith.com/privacy-policy/'
-                  rel='noreferrer'
-                >
-                  Privacy Policy
-                </a>
-              </div>
+              {!preventSignup && (
+                <div className='mt-4 text-center text-small text-muted'>
+                  By signing up you agree to our{' '}
+                  <a
+                    style={{ opacity: 0.8 }}
+                    target='_blank'
+                    className='text-small'
+                    href='https://flagsmith.com/terms-of-service/'
+                    rel='noreferrer'
+                  >
+                    Terms of Service
+                  </a>{' '}
+                  and{' '}
+                  <a
+                    style={{ opacity: 0.8 }}
+                    target='_blank'
+                    className='text-small'
+                    href='https://flagsmith.com/privacy-policy/'
+                    rel='noreferrer'
+                  >
+                    Privacy Policy
+                  </a>
+                </div>
+              )}
+
             </div>
           </div>
         </div>

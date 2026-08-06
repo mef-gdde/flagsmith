@@ -28,6 +28,9 @@ module.exports = function setupRoutes(app) {
       { name: 'preventSignup', value: envToBool('PREVENT_SIGNUP', false) },
       { name: 'preventEmailPassword', value: envToBool('PREVENT_EMAIL_PASSWORD', false) },
       { name: 'preventForgotPassword', value: envToBool('PREVENT_FORGOT_PASSWORD', false) },
+      { name: 'preventOAuth', value: envToBool('PREVENT_OAUTH', false) },
+      { name: 'preventSAML', value: envToBool('PREVENT_SAML', false) },
+
       { name: 'superUserCreateOnly', value: envToBool('ONLY_SUPERUSERS_CAN_CREATE_ORGANISATIONS', false) },
       { name: 'flagsmith', value: process.env.FLAGSMITH_ON_FLAGSMITH_API_KEY },
       { name: 'headway', value: process.env.HEADWAY_API_KEY },
@@ -36,7 +39,8 @@ module.exports = function setupRoutes(app) {
       { name: 'pylonAppId', value: process.env.PYLON_APP_ID },
       { name: 'fpr', value: process.env.FIRST_PROMOTER_ID },
       { name: 'sentry', value: process.env.SENTRY_API_KEY },
-      { name: 'api', value: process.env.FLAGSMITH_PROXY_API_URL ? '/api/v1/' : process.env.FLAGSMITH_API_URL },
+      { name: 'api', value: process.env.FLAGSMITH_PROXY_API_URL ? '/api/v1/' : (process.env.FLAGSMITH_API_URL || (process.env.FLAGSMITH_PORT ? `http://localhost:${process.env.FLAGSMITH_PORT}/api/v1/` : 'http://localhost:8005/api/v1/')) },
+
       { name: 'apiProxyEnabled', value: !!process.env.FLAGSMITH_PROXY_API_URL },
       { name: 'maintenance', value: envToBool('ENABLE_MAINTENANCE_MODE', false) },
       { name: 'flagsmithClientAPI', value: process.env.FLAGSMITH_ON_FLAGSMITH_API_URL },
